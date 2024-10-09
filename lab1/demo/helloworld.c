@@ -10,7 +10,7 @@ int main(int argc, char** argv) {
         printf("Hello world from thread number %d\n", tid);
 
     
-        #pragma omp parallel 
+        #pragma omp parallel
         {
             int tid = omp_get_thread_num();
             printf("Frumos in anul 4, zice thread-ul %d\n", tid);
