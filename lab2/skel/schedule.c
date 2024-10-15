@@ -27,7 +27,7 @@ int main(int argc, char *argv[])
             printf("Number of threads = %d\n", nthreads);
         }
 
-        #pragma omp for schedule(dynamic,chunk)
+        #pragma omp for schedule(guided,chunk)
         for (i = 0; i < N; i++) {
             c[i] = a[i] + b[i];
         }
