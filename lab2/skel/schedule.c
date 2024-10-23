@@ -2,7 +2,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-#define CHUNKSIZE 10
+#define CHUNKSIZE 1000
 #define N 100000
 
 int main(int argc, char *argv[]) 
@@ -27,7 +27,7 @@ int main(int argc, char *argv[])
             printf("Number of threads = %d\n", nthreads);
         }
 
-        #pragma omp for schedule(guided,chunk)
+        #pragma omp for schedule(static,chunk)
         for (i = 0; i < N; i++) {
             c[i] = a[i] + b[i];
         }

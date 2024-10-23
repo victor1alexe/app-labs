@@ -33,8 +33,14 @@ void preorder(binary_search_tree *tree) {
     }
 
 	printf("%d ", tree->data);
-	preorder(tree->left);
-	preorder(tree->right);
+
+	#pragma omp task shared(tree)
+	{
+		preorder(tree->left);
+		preorder(tree->right);
+	}
+
+	#pragma omp taskwait
 }
 
 int maximum (int a, int b) {
@@ -47,10 +53,13 @@ int height (binary_search_tree *tree) {
 
     int left, right;
     
-    left = height(tree->left);
+	#pragma omp task shared(left)
+	left = height(tree->left);
 
-    right = height(tree->right);
-
+	#pragma omp task shared(right)
+	right = height(tree->right);
+    
+	#pragma omp taskwait
 	return maximum(left, right) + 1;
 }
 
@@ -68,8 +77,17 @@ int main() {
 	tree = insert(tree, 7);
 	tree = insert(tree, 13); 
 
-    preorder(tree);
+#pragma omp parallel shared(tree)
+{
+	#pragma omp single
+	preorder(tree);
+
+	#pragma omp barrier
+
+	#pragma omp single
 	printf("\nHeight = %d\n", height(tree));
+}
+	
 
     return 0;
 }

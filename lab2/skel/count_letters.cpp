@@ -14,7 +14,6 @@ int main() {
     map<char, int> letters;
     vector<string> words;
 
-#pragma omp parallel for shared(letters)
     for (int i = 32; i < 128; i++) {
         letters[(char)i] = 0;
     }
@@ -32,12 +31,14 @@ int main() {
         fclose(file);
     }
 
+#pragma omp barrier
+
     double t1, t2;
     t1 = omp_get_wtime();
 
 #pragma omp parallel for
     for (int i = 0; i < words.size(); i++) {
-        #pragma omp parallel for schedule(dynamic, 1)
+        #pragma omp parallel for schedule(static, 100)
         for (int j = 0; j < words[i].size(); j++) {
             #pragma omp atomic
             letters[words[i][j]]++;
