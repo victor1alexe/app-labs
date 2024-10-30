@@ -1,4 +1,4 @@
 build:
 	gcc work_crew.c -o work_crew -lpthread
-clear:
+clean:
 	rm work_crew
